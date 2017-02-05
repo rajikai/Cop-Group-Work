@@ -12,7 +12,7 @@
 //Prototypes
 int OpenBin(int[][exams], int *, int *);
 
-char MENU(int, char *);
+int MENU(int, int *);
 int EnterGrades(int [][exams], int);
 void StudentAverage(int [][exams], int);
 void ExamAverage(int [][exams], int);
@@ -21,12 +21,11 @@ void ClearGrades(int [][exams], int *, int *);
 int SaveAsTXT(int [][exams], int, int);
 void TheEXIT();
 
-int CloseBin(int[][exams], int, long long int);
+int CloseBin(int[][exams], int, int);
 
 
 main() {
-	char GradesEntered = 0;
-	int input = 0, examGrades[students][exams] = { 0 }, i, j, studentVID = 0;
+	int input = 0, examGrades[students][exams] = { 0 }, i, j, studentVID = 0, GradesEntered = 0;
 	
 	OpenBin(examGrades, &studentVID, &GradesEntered);
 
@@ -86,11 +85,12 @@ main() {
 }
 
 int OpenBin(int examGrades[][exams], int *studentVID, int *GradesEntered) {
-	int i, temp, loop = students;
+	int i, temp;
 	FILE * fd;
 
 	//Checks if file is there, if not then creates it. 
-	fopen_s(&fd, "io.bin", "r");
+	fopen_s(&fd, "io.bin", "r+b");
+
 	if (fd == NULL) {
 		return 0;
 	}
@@ -100,13 +100,15 @@ int OpenBin(int examGrades[][exams], int *studentVID, int *GradesEntered) {
 	fread(&temp, sizeof(int), 1, fd);
 	*GradesEntered = temp;
 
-	fread(examGrades, sizeof(int), students * exams, fd);
+	for (i = 0; i < students; i++) {
+		fread(examGrades[i], sizeof(int), exams, fd);
+	}
 
 	fclose(fd);
 }
 
 //The interactive menu
-char MENU(int input, char *GradesEntered) {
+int MENU(int input, int *GradesEntered) {
 	CLS;
 
 	printf("Grade Tracker\n");
@@ -307,18 +309,18 @@ void TheEXIT() {
 	PAUSE;
 }
 
-int CloseBin(int examGrades[][exams], int studentVID, long long int GradesEntered) {
-	FILE * fd;
-
-	//Checks if file is there, if not then creates it. 
+int CloseBin(int examGrades[][exams], int studentVID, int GradesEntered) {
 	int i;
 	
+	FILE * fd;
 	fopen_s(&fd, "io.bin", "wb");
 
 	fwrite(&studentVID, sizeof(int), 1, fd);
 	fwrite(&GradesEntered, sizeof(int), 1, fd);
-	fwrite(examGrades, sizeof(int), students * exams, fd);
-
+	
+	for (i = 0; i < students; i++) {
+		fwrite(examGrades[i], sizeof(int), exams, fd);
+	}
 
 	fclose(fd);
 
