@@ -124,12 +124,14 @@ char MENU(int input, char *GradesEntered) {
 		scanf_s("%d", &input);
 		FLUSH;
 
-		while (*GradesEntered == 0 && input != 1) {
+		while (*GradesEntered == 0 && input != 1 && input != 7) {
 			printf("Please enter in a Student Grade first: "); 
 			scanf_s("%d", &input);
 			FLUSH;
 		}
-		*GradesEntered = 1;
+		if (input == 1) {
+			*GradesEntered = 1;
+		}
 
 	CLS;
 
