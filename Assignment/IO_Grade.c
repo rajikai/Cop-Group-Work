@@ -25,62 +25,73 @@ int CloseBin(int[][exams], int, int);
 
 
 main() {
-	int input = 0, examGrades[students][exams] = { 0 }, i, j, studentVID = 0, GradesEntered = 0;
-	
+	int input = 0, examGrades[students][exams] = { 0 }, i, j, studentVID = 0, GradesEntered = 0, valid = 0;
+
 	OpenBin(examGrades, &studentVID, &GradesEntered);
 
 	//Menu loop
 	do {
-		
+
 		input = 0;
 		input = MENU(input, &GradesEntered);
 
 		//Switch for Menu Input. Each case calls function appropriate to operation that is being requested. 
-		switch (input) {
-		case 1:
-			//Enter Grades.
-			EnterGrades(examGrades, studentVID);
-			studentVID++;
-			break;
+		while (valid == 0) {
+			switch (input) {
+			case 1:
+				//Enter Grades.
+				valid = 1;
+				EnterGrades(examGrades, studentVID);
+				studentVID++;
+				break;
 
-		case 2:
-			//Average scores Student.
-			StudentAverage(examGrades, studentVID);
-			break;
+			case 2:
+				//Average scores Student.
+				valid = 1;
+				StudentAverage(examGrades, studentVID);
+				break;
 
-		case 3:
-			//Exam average.
-			ExamAverage(examGrades, studentVID);
-			break;
+			case 3:
+				//Exam average.
+				valid = 1;
+				ExamAverage(examGrades, studentVID);
+				break;
 
-		case 4:
-			//Class Average.
-			ClassAverage(examGrades, studentVID);
-			break;
+			case 4:
+				//Class Average.
+				valid = 1;
+				ClassAverage(examGrades, studentVID);
+				break;
 
-		case 5:
-			//Clear Grades.
-			ClearGrades(examGrades, &studentVID, &GradesEntered);
-			break;
+			case 5:
+				//Clear Grades.
+				valid = 1;
+				ClearGrades(examGrades, &studentVID, &GradesEntered);
+				break;
 
-		case 6:
-			//Save to TXT.
-			SaveAsTXT(examGrades, studentVID, GradesEntered);
-			break;
+			case 6:
+				//Save to TXT.
+				valid = 1;
+				SaveAsTXT(examGrades, studentVID, GradesEntered);
+				break;
 
-		case 7:
-			TheEXIT();
-			//Quit.
-			break;
+			case 7:
+				//Quit.
+				valid = 1;
+				TheEXIT();
+				break;
 
-		default:
-			printf("Invalid Entry!\n");
-			scanf_s(" %d", &input);
-			break;
+			default:
+				printf("Invalid Entry!, try again: ");
+				scanf_s(" %d", &input);
+				FLUSH;
+				continue;
+			}
 
 		}
-
+		valid = 0;
 	} while (input != 7);
+
 	CloseBin(examGrades, studentVID, GradesEntered);
 }
 
@@ -135,8 +146,6 @@ int MENU(int input, int *GradesEntered) {
 			*GradesEntered = 1;
 		}
 
-	CLS;
-
 	return input;
 }
 
@@ -144,6 +153,8 @@ int MENU(int input, int *GradesEntered) {
 int EnterGrades(int examGrades[][exams], int studentVID)
 {
 	int i, counter = students + 1;
+
+	CLS;
 
 	//Student VID assigner
 	if (counter > 0) {
@@ -166,6 +177,8 @@ int EnterGrades(int examGrades[][exams], int studentVID)
 void StudentAverage(int examGrades[][exams], int studentVID) {
 	int sum = 0, sum1, i, STUDENT = 0;
 	float average;
+
+	CLS;
 
 	printf("Insert Student ID number: V");
 
@@ -194,6 +207,8 @@ void ExamAverage(int examGrades[][exams], int studentVID) {
 	int i, sum = 0, sum1, finder = 0;
 	float average;
 
+	CLS;
+
 	printf("Which Exam Average do you want? (1-4): ");
 
 	scanf_s("%i", &finder);
@@ -220,6 +235,8 @@ void ClassAverage(int examGrades[][exams], int studentVID) {
 	int i, j, sum = 0, sum1;
 	float average;
 
+	CLS;
+
 	for (i = 0; i < exams; i++) {
 		for (j = 0; j < students; j++) {
 			sum1 = examGrades[j][i];
@@ -236,6 +253,8 @@ void ClassAverage(int examGrades[][exams], int studentVID) {
 void ClearGrades(int examGrades[][exams], int *studentVID, int *GradesEntered) {
 	int i, j;
 	char EXIT = 0, input;
+
+	CLS;
 
 	printf("Are you sure you want to clear? (y/n): ");
 	
@@ -273,6 +292,8 @@ void ClearGrades(int examGrades[][exams], int *studentVID, int *GradesEntered) {
 int SaveAsTXT(int examGrades[][exams], int studentVID, int GradesEntered) {
 	int ID = students + 1, i, j;
 
+	CLS;
+
 	FILE * filetemp;
 
 
@@ -299,6 +320,7 @@ int SaveAsTXT(int examGrades[][exams], int studentVID, int GradesEntered) {
 }
 
 void TheEXIT() {
+
 	CLS;
 
 	printf("Created by: Rory Corn, Robert Gay, TJ Parrish, Jonathan Rodrigues \n");
@@ -314,6 +336,8 @@ int CloseBin(int examGrades[][exams], int studentVID, int GradesEntered) {
 	
 	FILE * fd;
 	fopen_s(&fd, "io.bin", "wb");
+
+	CLS;
 
 	fwrite(&studentVID, sizeof(int), 1, fd);
 	fwrite(&GradesEntered, sizeof(int), 1, fd);
