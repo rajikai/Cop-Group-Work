@@ -1,3 +1,10 @@
+/*
+* Terry Parrish
+* Jonathan Rodrigues
+* C Programming COP-2220C
+* Taught by: Professor Dennis Hunchuck
+*/
+
 #pragma once
 #ifndef _reduceClutter_(Battleship)_h
 #define _reduceClutter_(Battleship)_h
