@@ -193,7 +193,7 @@ void resetGame(char ships[row][col], char coords[row][col], int *movPlayed, int 
 }
 
 //Show the top ten scores
-void sortScore(int score[], int newScore) {
+char sortScore(int score[], int newScore) {
 	int i, cnt, temp, pass, colorNewScore;
 
 	//Checks from top down for zero. Inserts if it is. 

@@ -37,7 +37,7 @@ void havEiSunk();
 void youHaveSunk(struct ShipInfo *);
 int target(char[row][col], int *, int *, int);
 void BullsEye(int, int, char[row][col], char[row][col], int *, int *);
-void sortScore(int[], int);
+char sortScore(int[], int);
 void topTen(int[]);
 void EXIT();
 void CloseBin(int, int, int[], char, char[row][col], char[row][col]); //Saves file.
